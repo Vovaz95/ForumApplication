@@ -1,0 +1,19 @@
+﻿@model ForumApplication.Models.ViewModels.UserView
+
+@if (Model != null)
+{
+    if (Model.Avatar != null)
+    {
+        <li><div class="img-container"><img src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" class="user-avatar" /></div></li>
+    }
+    <li><a class="nickname-text">Hello, @Model.Nickname</a></li>
+    <li><a>|</a></li>
+    <li>@Html.ActionLink("Sign Out", "SignOut")</li>
+}
+else
+{
+    <li>@Html.ActionLink("Sign In", "SignIn")</li>
+    <li><a>|</a></li>
+    <li>@Html.ActionLink("Sign Up", "SignUp")</li>
+}
+

@@ -1,0 +1,26 @@
+﻿@using System.Web.Optimization
+@model ForumApplication.Models.ViewModels.CreateTopicView
+
+<div class="row create-topic-form">
+    <div class="col-lg-6 col-lg-offset-3">
+        @using (Html.BeginForm("CreateTopic", "Home", FormMethod.Post))
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.TopicName)
+                @Html.EditorFor(m => m.TopicName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.TopicName, string.Empty, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Description)
+                @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control description-box" } })
+                @Html.ValidationMessageFor(m => m.Description, string.Empty, new { @class = "text-danger" })
+            </div>
+                <input type="submit" value="Create Topic" class="btn btn-warning" />
+            
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

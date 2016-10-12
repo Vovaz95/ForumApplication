@@ -1,0 +1,94 @@
+﻿@using System.Web.Optimization
+@using PagedList.Mvc
+@model ForumApplication.Models.ViewModels.CurrentTopicView
+
+
+<div class="row post-container">
+    <div class="col-lg-12 post-text-container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="media">
+                    <img class="img-responsive post-img" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" alt="...">
+                </div>
+            </div>
+            <div class="col-lg-6 posted-user-inf">
+                <b>@Model.Nickname</b>
+                <br />
+                @Model.Datetime
+            </div>
+        </div>
+        <div class="row post-text">
+            <h3><span class="posted-topic-name">@Model.Name</span></h3>
+            <p class="posted-topic-description">@Model.Description</p>
+        </div>
+    </div>
+</div>
+
+
+@foreach (var message in Model.Messages)
+{
+    <div class="row comment-container">
+        <div class="col-lg-1">
+            <div class="thumbnail user-photo-container">
+                <img class="img-responsive user-photo" src="data:image;base64,@System.Convert.ToBase64String(message.Avatar)">
+            </div><!-- /thumbnail -->
+        </div><!-- /col-sm-1 -->
+
+        <div class="col-lg-11 pull-right">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    
+                    <strong>@message.NickName</strong> <span class="text-muted">@message.Datetime</span>
+                    @if (message.UserId == Model.CurrentUserId)
+                    {
+                        <a class="edit-btn" onclick="fillData('@message.Id', '@message.Text', '@Model.Messages.PageNumber', '@Model.Id')" data-toggle="modal" data-target="#editModal">
+                            <span class="glyphicon glyphicon-edit edit-comment"></span>
+                        </a>
+
+                    }
+                </div>
+                <div class="panel-body comment-text-container">
+                    <p class="message-text">@message.Text</p>
+                </div><!-- /panel-body -->
+            </div><!-- /panel panel-default -->
+        </div><!-- /col-sm-5 -->
+    </div>
+}
+
+@Html.Partial("EditMessagePartialView")
+
+<div class="row comments-pagination-container">
+    @Html.PagedListPager(Model.Messages, page => Url.Action("Index",
+        new { page }))
+</div>
+
+@if (Model.CurrentUserId != null)
+{
+    <div class="row message-form-container">
+
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="widget-area no-padding blank">
+                <div class="status-upload">
+                    @using (Html.BeginForm("CreateMessage", "Topic", FormMethod.Post, new { id = "message-form" }))
+                    {
+                        @Html.Hidden("pageCount", Model.Messages.PageCount == 0 ? 1 : Model.Messages.PageCount)
+                        @Html.Hidden("topicId", Model.Id)
+                        @Html.TextArea("message", new { placeholder = "Leave a comment!" });
+
+                        <input type="submit" value="Comment" class="btn btn-success green">
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+  <span class="text-danger leave-comment-alert">You Must Be Signed In To Comment!</span>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

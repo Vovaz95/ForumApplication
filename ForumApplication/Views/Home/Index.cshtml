@@ -1,0 +1,44 @@
+﻿@model PagedList.IPagedList<ForumApplication.Models.ViewModels.TableTopicView>
+@using PagedList.Mvc
+
+    @if (ViewBag.isRegistered)
+    {
+        <div class="row add-topic-container">
+            @Html.ActionLink("Create Topic", "CreateTopic", "Home", new { @class = "btn btn-warning" })
+        </div>
+    }
+    else
+    {
+        <div class="row add-topic-container">
+            <span class="add-topic-msg text-danger">To create topic you need to sign in or sign up</span>
+        </div>
+    }
+<div class="row table-container">
+    <table class="table table-striped table-bordered table-sm table-hover">
+        <thead class="topics-head">
+        <tr>
+            <th class="topic-inf-center">Topic name</th>
+            <th class="topic-inf-center">Author</th>
+            <th class="topic-inf-center">Date</th>
+            <th class="topic-inf-center">Comments</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var topic in Model)
+        {
+            <tr class="topic-inf" onclick="location.href = '@Url.Action("Index", "Topic", new {id = topic.Id})'">
+                <td class="col-lg-6">@topic.Name</td>
+                <td class="topic-inf-center">@topic.Author</td>
+                <td class="topic-inf-center">@topic.Datetime</td>
+                <td class="topic-inf-center"><i class="comments-icon"></i>@topic.MessagesCount</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<div class="row pagination-container">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page }))
+</div>

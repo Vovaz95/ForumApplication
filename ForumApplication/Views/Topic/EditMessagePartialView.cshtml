@@ -1,0 +1,27 @@
+﻿
+<div class="modal fade" id="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("EditMessage", "Topic", FormMethod.Post))
+                {
+                    @Html.Hidden("editTopicId", string.Empty)
+                    @Html.Hidden("editPageNumber", string.Empty)
+                    @Html.Hidden("editMessagePage", string.Empty)
+                    @Html.Hidden("editMessageId", string.Empty)
+                    @Html.TextArea("editMessageText", string.Empty)
+                    <div class="modal-footer">
+                        <input class="btn btn-success" type="submit" value="Save" />
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                    </div>
+                    
+                }
+            </div>
+            
+        </div>
+    </div>
+</div>
